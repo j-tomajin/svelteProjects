@@ -3,32 +3,50 @@
 
     let todos = []
 	
-	const deleteTask = (id) => {
-		todos = todos.filter((todo) => todo.id != id)
-	}
-
 	const addNewTodo = (e) => {
 		const todo = e.detail
 		todos = [todo, ...todos]
-		console.log(todo.completed)
 	}	
+	
+	const optionsAdd = (e) => {
+		// 
+		const option = e.detail
+		console.log(option)
+	}
 </script>
 
-<Todo on:addingNewTodo={addNewTodo} />
 
 <main>
+	<Todo on:addingNewTodo={addNewTodo} on:optionsDispatch={optionsAdd} />
 	{#each todos as todo (todo.id)}
 		<div class="todo">
-			<p>{todo.task}</p>
-			<button on:click={deleteTask(todo.id)}>delete</button>
+			<p class={todo.completed ? 'completed' : 'notComplete'}>{todo.task}</p>
+			<button on:click={(() => todo.completed = !todo.completed)}>complete</button>
 		</div>
 	{/each}
 </main>
 
 <style lang="scss">
+	main {
+		margin-inline: auto;
+		width: min(calc(100% - 24px), 500px);
+		border: 1px solid rgba(0, 0, 0, 0.233);
+		padding: 16px;
+		border-radius: 8px;
+	}
+
 	.todo {
 		display: flex;
 		align-items: center;
-		gap: 24px;
+		justify-content: space-between;
+	}
+
+	.completed {
+		color: red;
+		text-decoration: line-through;
+	}
+
+	.notComplete {
+		color: black;
 	}
 </style>
