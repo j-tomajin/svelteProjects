@@ -7,21 +7,29 @@
 		const todo = e.detail
 		todos = [todo, ...todos]
 	}	
-	
-	const optionsAdd = (e) => {
-		// 
-		const option = e.detail
-		console.log(option)
+
+	const deleteTask = (id) => {
+		todos = todos.filter((todo) => todo.id != id)
 	}
 </script>
 
 
 <main>
-	<Todo on:addingNewTodo={addNewTodo} on:optionsDispatch={optionsAdd} />
+	<Todo on:addingNewTodo={addNewTodo} />
 	{#each todos as todo (todo.id)}
 		<div class="todo">
+			<button 
+			on:click={deleteTask(todo.id)}
+			class="deleteBtn"
+			>
+				Delete
+			</button>
 			<p class={todo.completed ? 'completed' : 'notComplete'}>{todo.task}</p>
-			<button on:click={(() => todo.completed = !todo.completed)}>complete</button>
+			<button 
+			on:click={(() => todo.completed = !todo.completed)}
+			class="completeBtn"
+			>
+				complete</button>
 		</div>
 	{/each}
 </main>
@@ -38,7 +46,14 @@
 	.todo {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
+		justify-content: center;
+	}
+
+	.deleteBtn {
+		margin-inline-end: 24px;
+	}
+	.completeBtn {
+		margin-inline-start: auto;
 	}
 
 	.completed {
